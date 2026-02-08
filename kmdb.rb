@@ -79,7 +79,11 @@
 # Use `Model.destroy_all` code.
 
 # TODO!
-Model.destroy_all
+Movie.destroy_all
+Studio.destroy_all
+Actor.destroy_all
+Agent.destroy_all
+Role.destroy_all
 
 # Generate models and tables, according to the domain model.
 # TODO!
@@ -360,7 +364,6 @@ new_role15["actor_id"] = anne_hathaway["id"]
 new_role15["character_name"] = "Selina Kyle"
 new_role15.save
 
-
 # Prints a header for the movies output
 puts "Movies"
 puts "======"
@@ -368,6 +371,11 @@ puts ""
 
 # Query the movies data and loop through the results to display the movies output.
 # TODO!
+
+Movie.all.each do |movie|
+    studio = Studio.find_by({"id" => movie["studio_id"]})
+    puts "#{movie["movie_title"]}  #{movie["year_released"]}  #{movie["mpaa_rating"]} #{studio["studio_name"]}"
+end
 
 # Prints a header for the cast output
 puts ""
@@ -377,6 +385,12 @@ puts ""
 
 # Query the cast data and loop through the results to display the cast output for each movie.
 # TODO!
+
+Role.all.each do |cast|
+  actor = Actor.find_by({"id" => cast["actor_id"]})
+  movie = Movie.find_by({"id" => cast["movie_id"]})
+  puts "#{movie["movie_title"]} #{actor["actor_name"]} #{cast["character_name"]}"
+end
 
 # Prints a header for the agent's list of represented actors output
 puts ""
