@@ -88,6 +88,8 @@ Role.destroy_all
 # Generate models and tables, according to the domain model.
 # TODO!
 
+## Row 25-27 of rubric
+
 ## SS notes: 
 # in terminal, entered - rails generate model Movie
 # in terminal, entered - rails generate model Studio
@@ -120,6 +122,7 @@ Role.destroy_all
 # Do not use hard-coded foreign key IDs.
 # TODO!
 
+## Row 28-30 of rubric
 new_studio1 = Studio.new
 new_studio1["studio_name"] = "Warner Bros."
 new_studio1.save
@@ -372,9 +375,23 @@ puts ""
 # Query the movies data and loop through the results to display the movies output.
 # TODO!
 
+## Row 31-32 of rubric
+
 Movie.all.each do |movie|
     studio = Studio.find_by({"id" => movie["studio_id"]})
     puts "#{movie["movie_title"]}  #{movie["year_released"]}  #{movie["mpaa_rating"]} #{studio["studio_name"]}"
+end
+
+#SS note: we didn't learn printf in class, but i couldn't figure out another way to show the data in the table-like format used in the solution. as a result, i've included both the "puts" way and "printf"
+
+puts ""
+puts "Movies - Formatted"
+puts "======"
+puts ""
+
+Movie.all.each do |movie|
+    studio = Studio.find_by({"id" => movie["studio_id"]})
+    printf "%-23s%-15s%-7s%s\n", movie["movie_title"], movie["year_released"], movie["mpaa_rating"], studio["studio_name"]  
 end
 
 # Prints a header for the cast output
@@ -389,7 +406,20 @@ puts ""
 Role.all.each do |cast|
   actor = Actor.find_by({"id" => cast["actor_id"]})
   movie = Movie.find_by({"id" => cast["movie_id"]})
-  puts "#{movie["movie_title"]} #{actor["actor_name"]} #{cast["character_name"]}"
+  puts "#{movie["movie_title"]} #{actor["actor_name"]}  #{cast["character_name"]}"
+end
+
+#SS note: we didn't learn printf in class, but i couldn't figure out another way to show the data in the table-like format used in the solution. as a result, i've included both the "puts" way and "printf"
+
+puts ""
+puts "Top Cast - Formatted"
+puts "========"
+puts ""
+
+Role.all.each do |cast|
+  actor = Actor.find_by({"id" => cast["actor_id"]})
+  movie = Movie.find_by({"id" => cast["movie_id"]})
+  printf "%-23s%-22s%s\n", movie["movie_title"], actor["actor_name"], cast["character_name"]
 end
 
 # Prints a header for the agent's list of represented actors output
@@ -400,3 +430,10 @@ puts ""
 
 # Query the actor data and loop through the results to display the agent's list of represented actors output.
 # TODO!
+
+somil = Agent.find_by({"agent_name" => "Somil Sanghvi"})
+represented_actors = Actor.where({"agent_id" => somil["id"]})
+
+represented_actors.each do |actor|
+  puts "#{actor["actor_name"]}"
+end
